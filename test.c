@@ -13,7 +13,7 @@ static int test_pass = 0;
         if(equality)\
             test_pass++;\
         else{\
-            fprint(stderr, "%s:%d: expect: " format "actual: " format "\n", __FILE__, __LINE__, expect, actual);\
+            fprintf(stderr, "%s:%d: expect: " format " actual: " format "\n", __FILE__, __LINE__, expect, actual);\
             main_ret = 1;\
         }\
     } while(0)
@@ -75,22 +75,21 @@ static void test_parse_number() {
 #define TEST_ERROR(error, json)\
     do {\
         lept_value v;\
-        v.type = LEPT_NULL;\
+        v.type = LEPT_FALSE;\
         EXPECT_EQ_INT(error, lept_parse(&v, json));\
         EXPECT_EQ_INT(LEPT_UNDEFINED, lept_get_type(&v));\
     } while(0)
 
 static void test_parse_expect_value() {
-    TEST_ERROR(LEPT_PARSE_EXPECT_VALUE, "")
-    TEST_ERROR(LEPT_PARSE_EXPECT_VALUE, " ")
+	TEST_ERROR(LEPT_PARSE_EXPECT_VALUE, "");
+	TEST_ERROR(LEPT_PARSE_EXPECT_VALUE, " ");
 }
 
 static void test_parse_invalid_value() {
-    TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "nul")
-    TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "?")
-}
+	TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "nul");
+	TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "?");
 
-#if 0
+#if 1
     /* invalid number */
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "+0");
     TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "+1");
@@ -104,9 +103,9 @@ static void test_parse_invalid_value() {
 }
 
 static void test_parse_root_not_singular() {
-    TEST_ERROR(LEPT_PARSE_INVALID_VALUE, "null x")
+	TEST_ERROR(LEPT_PARSE_ROOT_NOT_SINGULAR, "null x");
 
-#if 0
+#if 1
     /* invalid number */
     TEST_ERROR(LEPT_PARSE_ROOT_NOT_SINGULAR, "0123"); /* after zero should be '.' or nothing */
     TEST_ERROR(LEPT_PARSE_ROOT_NOT_SINGULAR, "0x0");
@@ -116,25 +115,21 @@ static void test_parse_root_not_singular() {
 
 
 static void test_parse_number_too_big() {
-#if 0
+#if 1
     TEST_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "1e309");
     TEST_ERROR(LEPT_PARSE_NUMBER_TOO_BIG, "-1e309");
 #endif
 }
 
 static void test_parse() {
-    test_parse_null();
-    test_parse_true();
-    test_parse_false();
-    test_parse_number();
-    test_parse_expect_value();
-    test_parse_invalid_value();
-    test_parse_root_not_singular();
-    test_parse_number_too_big();
-}
-
-static void test_parse() {
-    test_parse_null();
+	test_parse_null();
+	test_parse_true();
+	test_parse_false();
+	test_parse_number();
+	test_parse_expect_value();
+	test_parse_invalid_value();
+	test_parse_root_not_singular();
+	test_parse_number_too_big();
 }
 
 int main() {

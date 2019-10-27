@@ -236,8 +236,7 @@ static void test_parse()
 	test_parse_false();
 	test_parse_number();
 	test_parse_string();
-
-#if 1
+	
 	test_parse_expect_value();
 	test_parse_invalid_value();
 	test_parse_root_not_singular();
@@ -250,7 +249,6 @@ static void test_parse()
 	test_access_boolean();
 	test_access_number();
 	test_access_string();
-#endif
 }
 
 int main()

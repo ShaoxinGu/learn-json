@@ -14,6 +14,11 @@
 #define ISDIGIT1TO9(ch)     ((ch) >= '1' && (ch) <= '9')
 #define PUTC(c, ch)         do { *(char*)lept_context_push(c, sizeof(char)) = (ch); } while(0)
 
+/*
+** 待解析数据。
+** 包含一个用于存储json原文的字符串常量，和一个用于辅助解析的栈。
+** 避免解析函数传递多个参数。
+*/
 typedef struct {
 	const char* json;
 	char* stack;
@@ -183,7 +188,7 @@ static int lept_parse_string(lept_context* c, lept_value* v) {
 	}
 }
 
-static int lept_parse_value(lept_context* c, lept_value* v);/*ǰ������*/
+static int lept_parse_value(lept_context* c, lept_value* v);/*前向声明*/
 
 static int lept_parse_array(lept_context* c, lept_value* v) {
 	size_t i, size = 0;

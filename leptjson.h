@@ -3,17 +3,26 @@
 
 #include <stddef.h>	/* size_t */
 
+/* 表示解析类型的枚举 */
 typedef enum { LEPT_UNDEFINED, LEPT_NULL, LEPT_TRUE, LEPT_FALSE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT }lept_type;
 
-typedef struct lept_value lept_value;
+
+typedef struct lept_value lept_value;	/* 解析结果数据，包含解析类型和对应数据 */
+typedef struct lept_member lept_member;	/* 解析对象，包含一个lept_value和键的字符串 */
 
 struct lept_value {
 	union {
+		struct { lept_member* m; size_t size; };/* object */
 		struct { lept_value* e; size_t size; }; /* array */
 		struct { char* s; size_t len; };		/* string */
 		double n;								/* number */
 	};
 	lept_type type;
+};
+
+struct lept_member {
+	char* k; size_t klen;   /* member key string, key string length */
+	lept_value v;           /* member value */
 };
 
 enum

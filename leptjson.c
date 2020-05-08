@@ -198,8 +198,8 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
 	if (*c->json == ']') {
 		c->json++;
 		v->type = LEPT_ARRAY;
-		v->size = 0;
-		v->e = NULL;
+		v->a.size = 0;
+		v->a.e = NULL;
 		return LEPT_PARSE_OK;
 	}
 	for (;;) {
@@ -217,9 +217,9 @@ static int lept_parse_array(lept_context* c, lept_value* v) {
 		else if (*c->json == ']') {
 			c->json++;
 			v->type = LEPT_ARRAY;
-			v->size = size;
+			v->a.size = size;
 			size *= sizeof(lept_value);
-			memcpy(v->e = (lept_value*)malloc(size), lept_context_pop(c, size), size);
+			memcpy(v->a.e = (lept_value*)malloc(size), lept_context_pop(c, size), size);
 			return LEPT_PARSE_OK;
 		}
 		else {
@@ -276,12 +276,12 @@ void lept_free(lept_value* v)
 	assert(v != NULL);
 	switch (v->type) {
 		case LEPT_STRING:
-			free(v->s);
+			free(v->s.s);
 			break;
 		case LEPT_ARRAY:
-			for (i = 0; i < v->size; i++)
-				lept_free(&v->e[i]);
-			free(v->e);
+			for (i = 0; i < v->a.size; i++)
+				lept_free(&v->a.e[i]);
+			free(v->a.e);
 			break;
 		default: 
 			break;
@@ -329,33 +329,33 @@ void lept_set_number(lept_value* v, double n)
 const char* lept_get_string(const lept_value* v)
 {
 	assert(v != NULL && v->type == LEPT_STRING);
-	return v->s;
+	return v->s.s;
 }
 
 size_t lept_get_string_length(const lept_value* v)
 {
 	assert(v != NULL && v->type == LEPT_STRING);
-	return v->len;
+	return v->s.len;
 }
 
 void lept_set_string(lept_value* v, const char* s, size_t len)
 {
 	assert(v != NULL && (s != NULL || len == 0));
 	lept_free(v);
-	v->s = (char*)malloc(len + 1);
-	memcpy(v->s, s, len);
-	v->s[len] = '\0';
-	v->len = len;
+	v->s.s = (char*)malloc(len + 1);
+	memcpy(v->s.s, s, len);
+	v->s.s[len] = '\0';
+	v->s.len = len;
 	v->type = LEPT_STRING;
 }
 
 size_t lept_get_array_size(const lept_value* v) {
 	assert(v != NULL && v->type == LEPT_ARRAY);
-	return v->size;
+	return v->a.size;
 }
 
 lept_value* lept_get_array_element(const lept_value* v, size_t index) {
 	assert(v != NULL && v->type == LEPT_ARRAY);
-	assert(index < v->size);
-	return &v->e[index];
+	assert(index < v->a.size);
+	return &v->a.e[index];
 }

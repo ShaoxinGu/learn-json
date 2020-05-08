@@ -12,9 +12,9 @@ typedef struct lept_member lept_member;	/* 解析对象，包含一个lept_value
 
 struct lept_value {
 	union {
-		struct { lept_member* m; size_t size; };/* object */
-		struct { lept_value* e; size_t size; }; /* array */
-		struct { char* s; size_t len; };		/* string */
+		struct { lept_member* m; size_t size; }o;/* object */
+		struct { lept_value* e; size_t size; }a; /* array */
+		struct { char* s; size_t len; }s;		/* string */
 		double n;								/* number */
 	};
 	lept_type type;

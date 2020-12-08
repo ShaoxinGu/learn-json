@@ -40,12 +40,13 @@ enum
 	LEPT_PARSE_MISS_COMMA_OR_SQUARE_BRACKET,
 	LEPT_PARSE_MISS_KEY,
 	LEPT_PARSE_MISS_COLON,
-	LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET
+	LEPT_PARSE_MISS_COMMA_OR_CURLY_BRACKET,
 };
 
 #define lept_init(v)		do { (v)->type = LEPT_UNDEFINED; } while(0)
 
 int lept_parse(lept_value* v, const char* json);
+char* lept_stringify(const lept_value* v, size_t* length);
 
 void lept_free(lept_value* v);
 
